@@ -6,3 +6,26 @@
     android:canRetrieveWindowContent="false"
     android:notificationTimeout="100"
     android:description="@string/app_name" />
+File 3: device_admin.xml
+Path: app/src/main/res/xml/device_admin.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<device-admin xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-policies>
+        <force-lock />
+    </uses-policies>
+</device-admin>
+File 4: AdminReceiver.kt
+package com.jaydev.studyfocus
+
+import android.app.admin.DeviceAdminReceiver
+import android.content.Context
+import android.content.Intent
+
+class AdminReceiver : DeviceAdminReceiver() {
+    // While a study slot is active, we warn before admin is removed.
+    override fun onDisableRequested(context: Context, intent: Intent): CharSequence {
+        return if (Storage(context).isStudyActiveNow())
+            "Study time chal raha hai! Abhi admin band mat karo."
+        else "Admin band karne se strict mode hat jayega."
+    }
+}
